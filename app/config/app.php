@@ -122,7 +122,9 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 
-		'Laracasts\Commander\CommanderServiceProvider'
+		'Laracasts\Commander\CommanderServiceProvider',
+
+		'YSFHQ\Migrator\Provider'
 
 	),
 

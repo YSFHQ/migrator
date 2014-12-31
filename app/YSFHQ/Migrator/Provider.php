@@ -6,6 +6,6 @@ class Provider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->bind('YSFHQ\Clients\PhpbbClient', 'YSFHQ\Clients\PhpbbClient');
+        $this->app->bind('YSFHQ\Infrastructure\Clients\PhpbbClient', 'YSFHQ\Infrastructure\Clients\PhpbbClient');
     }
 }

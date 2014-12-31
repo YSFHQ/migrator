@@ -1,10 +1,10 @@
-<?php namespace YSFHQ\Infrastructure\Clients;
+<?php namespace YSFHQ\Infrastructure\Helpers;
 
 class BitfieldHelper
 {
     var $bitfield_data;
 
-    function bitfield($bitfield = '')
+    function __construct($bitfield = '')
     {
         $this->bitfield_data = base64_decode($bitfield);
     }

@@ -10,7 +10,12 @@ class PhpbbClient
 
     public function getPosts($page = 1)
     {
-        return DB::connection('phpbb')->table('phpbb_posts')->skip($per_page * ($page - 1))->take($per_page)->get();
+        return \DB::connection('phpbb')->table('phpbb_posts')->skip($this->per_page * ($page - 1))->take($this->per_page)->get();
+    }
+
+    public function updatePost($id = null, $attributes = [])
+    {
+        return \DB::connection('phpbb')->table('phpbb_posts')->where('post_id', $id)->update($attributes);
     }
 
 }

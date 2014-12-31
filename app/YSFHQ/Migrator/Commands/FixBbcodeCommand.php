@@ -1,9 +1,10 @@
 <?php namespace YSFHQ\Migrator\Commands;
 
-class FixBbcodeCommand {
+class FixBbcodeCommand
+{
 
-    private $old_bbcode_id;
-    private $new_bbcode_id;
+    public $old_bbcode_id;
+    public $new_bbcode_id;
 
     public function __construct($old_bbcode_id, $new_bbcode_id)
     {

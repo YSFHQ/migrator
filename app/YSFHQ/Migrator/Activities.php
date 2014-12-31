@@ -6,7 +6,9 @@ use Laracasts\Commander\CommanderTrait;
 
 use YSFHQ\Migrator\Commands\FixBbcodeCommand;
 
-class Activities {
+class Activities
+{
+    use CommanderTrait;
 
     public function fixAlignBBCode()
     {
