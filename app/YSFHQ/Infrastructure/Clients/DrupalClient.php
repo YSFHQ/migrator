@@ -27,6 +27,7 @@ class DrupalClient extends DatabaseClient
                 'drupal_content_type_addon.field_dl_url',
                 'drupal_content_type_addon.field_dl_title',
                 'drupal_content_type_addon.field_credit_value',
+                'drupal_node.created',
                 'drupal_users.name'
             )->get();
     }
@@ -41,6 +42,7 @@ class DrupalClient extends DatabaseClient
                 'drupal_content_type_screenshot.field_url_title',
                 'drupal_node_revisions.body',
                 'drupal_node_revisions.teaser',
+                'drupal_node.created',
                 'drupal_users.name'
             )->get();
     }
@@ -57,6 +59,7 @@ class DrupalClient extends DatabaseClient
                 'drupal_content_type_video.field_vid_duration',
                 'drupal_node_revisions.body',
                 'drupal_node_revisions.teaser',
+                'drupal_node.created',
                 'drupal_users.name'
             )->get();
     }
@@ -74,7 +77,8 @@ class DrupalClient extends DatabaseClient
                 'drupal_node.nid',
                 'drupal_node_revisions.title',
                 'drupal_node_revisions.body',
-                'drupal_node_revisions.teaser'
+                'drupal_node_revisions.teaser',
+                'drupal_node.created'
             )->get();
     }
 

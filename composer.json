@@ -6,7 +6,9 @@
 	"type": "project",
 	"require": {
 		"laravel/framework": "4.2.*",
-		"laracasts/commander": "~1.0"
+		"laracasts/commander": "~1.0",
+		"nesbot/Carbon": "*",
+		"html2text/html2text": "dev-master"
 	},
 	"autoload": {
 		"classmap": [
