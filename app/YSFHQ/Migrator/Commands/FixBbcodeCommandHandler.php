@@ -6,17 +6,17 @@ use Laracasts\Commander\CommandHandler,
 
 class FixBbcodeCommandHandler implements CommandHandler
 {
-    private $client;
+    private $phpbb;
 
-    public function __construct(PhpbbClient $client)
+    public function __construct(PhpbbClient $phpbb)
     {
-        $this->client = $client;
+        $this->phpbb = $phpbb;
     }
 
     public function handle($command)
     {
         $page = 1;
-        while ($posts = $this->client->getPosts($page)) {
+        while ($posts = $this->phpbb->getPosts($page)) {
             foreach ($posts as $post) {
                 if ($post->bbcode_bitfield) {
                     $bitfield = new BitfieldHelper($post->bbcode_bitfield);
@@ -26,7 +26,7 @@ class FixBbcodeCommandHandler implements CommandHandler
                         $bitfield->set($command->new_bbcode_id);
                         $new_bitfield = $bitfield->get_base64();
 
-                        if ($this->client->updatePost($post->post_id, ['bbcode_bitfield' => $new_bitfield])) {
+                        if ($this->phpbb->updatePost($post->post_id, ['bbcode_bitfield' => $new_bitfield])) {
                             echo 'Updated BBCode of post ID '.$post->post_id.PHP_EOL;
                         } else {
                             echo 'Error trying to update post ID '.$post->post_id.PHP_EOL;

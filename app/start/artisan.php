@@ -12,3 +12,4 @@
 */
 
 Artisan::add(new BbcodePhpbbCommand);
+Artisan::add(new DrupalAddonMigrateCommand);

@@ -5,10 +5,10 @@ use \Exception;
 class DatabaseClient
 {
 
-    private $per_page = 500;
-    private $page = 1;
+    protected $per_page = 500;
+    protected $page = 1;
 
-    protected getConnection($conn = '')
+    protected function getConnection($conn = '')
     {
         return \DB::connection($conn);
     }
