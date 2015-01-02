@@ -6,21 +6,21 @@ use Symfony\Component\Console\Input\InputArgument;
 
 use YSFHQ\Migrator\Activities as MigratorActivities;
 
-class MigratePhpbbCommand extends Command {
+class BbcodePhpbbCommand extends Command {
 
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'migrate:phpbb';
+    protected $name = 'phpbb:fixbbcode';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description.';
+    protected $description = 'Fix old BBCode, replacing the bitfield on each post.';
 
     /**
      * Create a new command instance.

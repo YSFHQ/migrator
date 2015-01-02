@@ -11,4 +11,4 @@
 |
 */
 
-Artisan::add(new MigratePhpbbCommand);
+Artisan::add(new BbcodePhpbbCommand);

@@ -26,7 +26,7 @@ return array(
     |
     */
 
-    'default' => 'mysql',
+    'default' => 'meta',
 
     /*
     |--------------------------------------------------------------------------
@@ -88,6 +88,17 @@ return array(
             'charset'   => $_ENV['connections.ysupload.charset'],
             'collation' => $_ENV['connections.ysupload.collation'],
             'prefix'    => $_ENV['connections.ysupload.prefix'],
+        ),
+
+        'meta' => array(
+            'driver'    => $_ENV['connections.meta.driver'],
+            'host'      => $_ENV['connections.meta.host'],
+            'database'  => $_ENV['connections.meta.database'],
+            'username'  => $_ENV['connections.meta.username'],
+            'password'  => $_ENV['connections.meta.password'],
+            'charset'   => $_ENV['connections.meta.charset'],
+            'collation' => $_ENV['connections.meta.collation'],
+            'prefix'    => $_ENV['connections.meta.prefix'],
         ),
 
     ),
