@@ -20,6 +20,7 @@ class YSUploadClient extends DatabaseClient
                 'files_version',
                 'files.image_url',
                 'files.downloads',
+                'files.modPerms',
                 'files.uploader_username',
                 'files.upload_timestamp'
             )->get();

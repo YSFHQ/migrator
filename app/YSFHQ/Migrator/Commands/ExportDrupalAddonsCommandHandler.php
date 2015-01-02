@@ -36,6 +36,7 @@ class ExportDrupalAddonsCommandHandler implements CommandHandler {
 
                 $post = new Post;
                 $post->legacy_id = $addon->nid;
+                $post->source = 'drupal';
                 $post->poster_username = $addon->name;
                 $post->post_subject = $addon->title;
                 $post->post_text = <<<EOT

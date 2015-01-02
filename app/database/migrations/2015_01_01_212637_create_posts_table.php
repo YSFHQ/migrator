@@ -15,6 +15,7 @@ class CreatePostsTable extends Migration {
         Schema::create('posts', function ($table) {
             $table->increments('id');
             $table->integer('legacy_id');
+            $table->enum('source', ['drupal', 'ysupload']);
             $table->string('poster_username');
             $table->string('post_subject');
             $table->longText('post_text');
