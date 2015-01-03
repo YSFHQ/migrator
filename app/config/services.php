@@ -31,8 +31,8 @@ return array(
 	'ysfhq' => array(
 		'phpbb_url'	 => 'http://forum.ysfhq.com/',
 		'user_agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36',
-		'phpbb_username' => $_ENV['ysfhq.phpbb_username'],
-		'phpbb_password' => $_ENV['ysfhq.phpbb_password'],
+		'phpbb_username' => '',
+		'phpbb_password' => '',
 	),
 
 );
