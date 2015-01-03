@@ -37,7 +37,7 @@ class TestCommand extends Command {
 	 */
 	public function fire()
 	{
-		echo 'This is a test command.';
+		echo 'This is a test command. Use this as a sandbox for new features.'.PHP_EOL;
 	}
 
 	/**
