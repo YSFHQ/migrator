@@ -1,8 +1,9 @@
 <?php namespace YSFHQ\Migrator\Commands;
 
 use Carbon\Carbon,
-    Laracasts\Commander\CommandHandler,
-    YSFHQ\Infrastructure\Clients\YSUploadClient,
+    Illuminate\Support\Facades\Queue,
+    Laracasts\Commander\CommandHandler;
+use YSFHQ\Infrastructure\Clients\YSUploadClient,
     YSFHQ\Migrator\Post;
 
 class ExportYSUploadAddonMetaCommandHandler implements CommandHandler {
@@ -28,9 +29,9 @@ class ExportYSUploadAddonMetaCommandHandler implements CommandHandler {
                 $post = new Post;
                 $post->legacy_id = $addon->id;
                 $post->source = 'ysupload';
-                $post->poster_username = $addon->uploader_username;
-                $post->post_subject = $addon->meta_name;
-                $post->post_text = <<<EOT
+                $post->username = $addon->uploader_username;
+                $post->subject = $addon->meta_name;
+                $post->body = <<<EOT
 [size=150]$addon->meta_name[/size]
 [i]Category: $addon->meta_category / Version: $addon->version[/i]
 
@@ -46,7 +47,6 @@ License/Credits: $addon->modPerms
 
 [size=150][url=$addon->filename]DOWNLOAD[/url][/size]
 EOT;
-                $post->topic_id = null;
                 $post->forum_id = 264;
                 switch ($addon->meta_category) {
                     case 'Aircraft':
@@ -70,6 +70,7 @@ EOT;
                 }
                 $post->posted_on = $addon->upload_timestamp;
                 $post->save();
+                Queue::push('YSFHQ\Migrator\Tasks\ImportTasks@makePost', ['id' => $post->id]);
             }
             echo 'Page '.$page.' complete'.PHP_EOL;
             $page++;

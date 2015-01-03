@@ -5,8 +5,11 @@ use \Exception;
 class DatabaseClient
 {
 
-    protected $per_page = 100;
-    protected $page = 1;
+    public function __construct($per_page = 100, $page = 1)
+    {
+        $this->per_page = 100;
+        $this->page = 1;
+    }
 
     protected function getConnection($conn = '')
     {

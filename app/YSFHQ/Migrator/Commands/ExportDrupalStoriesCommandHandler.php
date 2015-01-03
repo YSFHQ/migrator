@@ -1,8 +1,9 @@
 <?php namespace YSFHQ\Migrator\Commands;
 
 use Carbon\Carbon,
-    Laracasts\Commander\CommandHandler,
-    YSFHQ\Infrastructure\Clients\DrupalClient,
+    Illuminate\Support\Facades\Queue,
+    Laracasts\Commander\CommandHandler;
+use YSFHQ\Infrastructure\Clients\DrupalClient,
     YSFHQ\Infrastructure\Helpers\BBCodeHelper,
     YSFHQ\Migrator\Post;
 
@@ -32,9 +33,9 @@ class ExportDrupalStoriesCommandHandler implements CommandHandler {
                 $post = new Post;
                 $post->legacy_id = $story->nid;
                 $post->source = 'drupal';
-                $post->poster_username = $story->name;
-                $post->post_subject = $story->title;
-                $post->post_text = <<<EOT
+                $post->username = $story->name;
+                $post->subject = $story->title;
+                $post->body = <<<EOT
 $story->teaser
 
 [u][size=150]$story->title[/size][/u]
@@ -42,10 +43,10 @@ $story->teaser
 
 $story->body
 EOT;
-                $post->topic_id = null;
                 $post->forum_id = 282;
                 $post->posted_on = Carbon::createFromTimeStamp($story->created)->toDateTimeString();
                 $post->save();
+                Queue::push('YSFHQ\Migrator\Tasks\ImportTasks@makePost', ['id' => $post->id]);
             }
             echo 'Page '.$page.' complete'.PHP_EOL;
             $page++;

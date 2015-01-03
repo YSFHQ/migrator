@@ -15,10 +15,11 @@ class CreatePostsTable extends Migration {
         Schema::create('posts', function ($table) {
             $table->increments('id');
             $table->integer('legacy_id');
+            $table->integer('phpbb_id');
             $table->enum('source', ['drupal', 'ysupload']);
-            $table->string('poster_username')->nullable();
-            $table->string('post_subject');
-            $table->longText('post_text');
+            $table->string('username')->nullable();
+            $table->string('subject');
+            $table->longText('body');
             $table->integer('forum_id');
             $table->integer('topic_id')->nullable();
             $table->timestamp('posted_on')->nullable();

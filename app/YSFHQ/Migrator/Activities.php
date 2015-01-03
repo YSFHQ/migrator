@@ -32,11 +32,6 @@ class Activities
         );
     }
 
-    public function importScreenshotsToPhpbb()
-    {
-        throw new Exception("Unimplemented method");
-    }
-
     public function exportVideosFromDrupal()
     {
         return $this->execute(
@@ -45,22 +40,12 @@ class Activities
         );
     }
 
-    public function importVideosToPhpbb()
-    {
-        throw new Exception("Unimplemented method");
-    }
-
     public function exportStoriesFromDrupal()
     {
         return $this->execute(
             ExportDrupalStoriesCommand::class,
             []
         );
-    }
-
-    public function importStoriesToPhpbb()
-    {
-        throw new Exception("Unimplemented method");
     }
 
     public function exportAddonsFromDrupal()
@@ -87,9 +72,18 @@ class Activities
         );
     }
 
-    public function importAddonsToPhpbb()
+    public function importPost($post_id = null)
     {
-        throw new Exception("Unimplemented method");
+        if (isset($post_id)) {
+            $post = Post::find($post_id);
+            $phpbb_post_id = $this->execute(
+                ImportPostCommand::class,
+                ['post' => $post]
+            );
+            $post->phpbb_id = $phpbb_post_id;
+            return $phpbb_post_id;
+        }
+        return -1;
     }
 
 }

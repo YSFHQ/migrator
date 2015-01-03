@@ -1,8 +1,9 @@
 <?php namespace YSFHQ\Migrator\Commands;
 
 use Carbon\Carbon,
-    Laracasts\Commander\CommandHandler,
-    YSFHQ\Infrastructure\Clients\DrupalClient,
+    Illuminate\Support\Facades\Queue,
+    Laracasts\Commander\CommandHandler;
+use YSFHQ\Infrastructure\Clients\DrupalClient,
     YSFHQ\Infrastructure\Helpers\BBCodeHelper,
     YSFHQ\Migrator\Post;
 
@@ -38,9 +39,9 @@ class ExportDrupalVideosCommandHandler implements CommandHandler {
                 $post = new Post;
                 $post->legacy_id = $video->nid;
                 $post->source = 'drupal';
-                $post->poster_username = $video->name;
-                $post->post_subject = $video->title;
-                $post->post_text = <<<EOT
+                $post->username = $video->name;
+                $post->subject = $video->title;
+                $post->body = <<<EOT
 [url=$video->field_vid_embed][size=150]$video->title [$minutes:$seconds][/size][/url]
 [i]by $video->name[/i]$embedded
 $video->body
@@ -49,6 +50,7 @@ EOT;
                 $post->forum_id = 281;
                 $post->posted_on = Carbon::createFromTimeStamp($video->created)->toDateTimeString();
                 $post->save();
+                Queue::push('YSFHQ\Migrator\Tasks\ImportTasks@makePost', ['id' => $post->id]);
             }
             echo 'Page '.$page.' complete'.PHP_EOL;
             $page++;

@@ -8,7 +8,8 @@
 		"laravel/framework": "4.2.*",
 		"laracasts/commander": "~1.0",
 		"nesbot/Carbon": "*",
-		"html2text/html2text": "dev-master"
+		"html2text/html2text": "dev-master",
+		"guzzlehttp/guzzle": "~5.1"
 	},
 	"autoload": {
 		"classmap": [

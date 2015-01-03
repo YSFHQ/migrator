@@ -5,6 +5,11 @@ use \Exception;
 class DrupalClient extends DatabaseClient
 {
 
+    public function __construct($per_page = 100, $page = 1)
+    {
+        parent::__construct($per_page, $page);
+    }
+
     public function getAddons($page = 1)
     {
         return $this->getConnection('drupal')
