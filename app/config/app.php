@@ -124,7 +124,7 @@ return array(
 
 		'Laracasts\Commander\CommanderServiceProvider',
 
-		'YSFHQ\Migrator\Provider'
+		'YSFHQ\Migrator\Provider',
 
 	),
 
@@ -192,6 +192,8 @@ return array(
 		'URL'               => 'Illuminate\Support\Facades\URL',
 		'Validator'         => 'Illuminate\Support\Facades\Validator',
 		'View'              => 'Illuminate\Support\Facades\View',
+
+		'MigratorActivities' => 'YSFHQ\Migrator\ActivitiesFacade',
 
 	),
 

@@ -10,7 +10,8 @@ use YSFHQ\Migrator\Commands\FixBbcodeCommand,
     YSFHQ\Migrator\Commands\ExportDrupalStoriesCommand,
     YSFHQ\Migrator\Commands\ExportDrupalAddonsCommand,
     YSFHQ\Migrator\Commands\ExportYSUploadAddonMetaCommand,
-    YSFHQ\Migrator\Commands\ExportYSUploadAddonDataCommand;
+    YSFHQ\Migrator\Commands\ExportYSUploadAddonDataCommand,
+    YSFHQ\Migrator\Commands\ImportPostCommand;
 
 class Activities
 {

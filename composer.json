@@ -9,7 +9,8 @@
 		"laracasts/commander": "~1.0",
 		"nesbot/Carbon": "*",
 		"html2text/html2text": "dev-master",
-		"guzzlehttp/guzzle": "~5.1"
+		"guzzlehttp/guzzle": "~5.1",
+		"pda/pheanstalk": "~2.0"
 	},
 	"autoload": {
 		"classmap": [

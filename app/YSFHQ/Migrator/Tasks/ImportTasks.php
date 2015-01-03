@@ -2,7 +2,7 @@
 
 use \Exception;
 use Illuminate\Support\Facades\Log;
-use YSFHQ\Migrator\Activities as MigratorActivities,
+use YSFHQ\Migrator\ActivitiesFacade as MigratorActivities,
     YSFHQ\Migrator\Post;
 
 class ImportTasks

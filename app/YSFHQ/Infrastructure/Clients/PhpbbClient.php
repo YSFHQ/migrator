@@ -2,7 +2,8 @@
 
 use \Exception;
 use GuzzleHttp\Client as HttpClient,
-    Illuminate\Support\Facades\Config;
+    Illuminate\Support\Facades\Config,
+    Illuminate\Support\Facades\Log;
 use YSFHQ\Migrator\Post;
 
 class PhpbbClient extends DatabaseClient
@@ -21,7 +22,9 @@ class PhpbbClient extends DatabaseClient
             ]
         ]);
         parent::__construct($per_page, $page);
-        $this->login(Config::get('services.ysfhq.phpbb_username'), Config::get('services.ysfhq.phpbb_password'));
+        if (!$this->login(Config::get('services.ysfhq.phpbb_username'), Config::get('services.ysfhq.phpbb_password'))) {
+            Log::error('Failed login to phpBB.');
+        }
     }
 
     private function login($username = '', $password = '')
@@ -71,10 +74,11 @@ class PhpbbClient extends DatabaseClient
             } else {
                 $result = $this->postNewTopic($attributes['forum_id'], $attributes['subject'], $attributes['body']);
             }
+            Log::info($result);
             // get topic or post id from result
             return 1; // phpBB post ID
         }
-        return false;
+        return -1;
     }
 
     private function postNewTopic($forum_id, $topic_title, $message)
@@ -111,7 +115,7 @@ class PhpbbClient extends DatabaseClient
 
     private function postReply()
     {
-
+        return false;
     }
 
     private function getToken($forum_id, $topic_id = '')
@@ -126,6 +130,7 @@ class PhpbbClient extends DatabaseClient
         if ($body = $response->getBody()) {
             $token = substr($body, strpos($body, '<input type="hidden" name="form_token" value="')+46);
             $token = substr($token, 0, strpos($token, '"/>'));
+            Log::info('token: '.$token);
             return $token;
         }
         return false;
