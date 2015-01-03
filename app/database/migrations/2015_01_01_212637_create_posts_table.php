@@ -16,11 +16,11 @@ class CreatePostsTable extends Migration {
             $table->increments('id');
             $table->integer('legacy_id');
             $table->enum('source', ['drupal', 'ysupload']);
-            $table->string('poster_username');
+            $table->string('poster_username')->nullable();
             $table->string('post_subject');
             $table->longText('post_text');
-            $table->boolean('new_topic');
             $table->integer('forum_id');
+            $table->integer('topic_id')->nullable();
             $table->timestamp('posted_on')->nullable();
             $table->timestamps();
         });

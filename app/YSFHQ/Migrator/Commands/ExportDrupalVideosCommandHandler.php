@@ -45,7 +45,7 @@ class ExportDrupalVideosCommandHandler implements CommandHandler {
 [i]by $video->name[/i]$embedded
 $video->body
 EOT;
-                $post->new_topic = false;
+                $post->topic_id = 6712;
                 $post->forum_id = 281;
                 $post->posted_on = Carbon::createFromTimeStamp($video->created)->toDateTimeString();
                 $post->save();

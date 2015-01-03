@@ -42,7 +42,7 @@ $story->teaser
 
 $story->body
 EOT;
-                $post->new_topic = true;
+                $post->topic_id = null;
                 $post->forum_id = 282;
                 $post->posted_on = Carbon::createFromTimeStamp($story->created)->toDateTimeString();
                 $post->save();

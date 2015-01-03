@@ -41,7 +41,7 @@ $screenshot->field_url_title
 [i]by $screenshot->name[/i]
 $screenshot->body
 EOT;
-                $post->new_topic = false;
+                $post->topic_id = 6711;
                 $post->forum_id = 281;
                 $post->posted_on = Carbon::createFromTimeStamp($screenshot->created)->toDateTimeString();
                 $post->save();

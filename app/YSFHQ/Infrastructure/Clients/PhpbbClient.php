@@ -2,6 +2,8 @@
 
 use \Exception;
 
+use YSFHQ\Migrator\Post;
+
 class PhpbbClient extends DatabaseClient
 {
 
@@ -23,14 +25,12 @@ class PhpbbClient extends DatabaseClient
             ->update($attributes);
     }
 
-    public function makeTopic()
+    public function makePost(Post $post = null)
     {
-        throw new Exception("Unimplemented method");
-    }
-
-    public function makePost()
-    {
-        throw new Exception("Unimplemented method");
+        if ($post) {
+            return 1; // phpBB post ID
+        }
+        return false;
     }
 
 }

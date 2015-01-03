@@ -46,7 +46,7 @@ License/Credits: $addon->modPerms
 
 [size=150][url=$addon->filename]DOWNLOAD[/url][/size]
 EOT;
-                $post->new_topic = true;
+                $post->topic_id = null;
                 $post->forum_id = 264;
                 switch ($addon->meta_category) {
                     case 'Aircraft':

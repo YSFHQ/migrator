@@ -56,7 +56,7 @@ $addon->field_credit_value
 
 [size=150][url=$addon->field_dl_url]$addon->field_dl_title[/url][/size]
 EOT;
-                $post->new_topic = true;
+                $post->topic_id = null;
                 $post->forum_id = 279;
                 switch ($addon->field_modtype_value) {
                     case 'aircraft':
