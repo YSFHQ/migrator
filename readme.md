@@ -2,7 +2,7 @@
 
 This application, developed with the Laravel PHP Framework (see below), is used to migrate content from YSFlight Headquarters' existing websites, notably our old [Drupal website](http://drupal.ysfhq.com) and [YSUpload.com](http://ysupload.com/) back to our more sustainable [phpBB forum](http://forum.ysfhq.com/). As the initial content is scattered across multiple database tables and columns, this tool is used to easily capture the important bits, then re-post the content in a templated fashion on the forum.
 
-## Steps
+### Steps
 
 1. Collect content from Drupal and YSUpload
   a. Drupal
@@ -20,7 +20,7 @@ This application, developed with the Laravel PHP Framework (see below), is used 
   c. Update all posts with their original authors and post times.
   d. (If YSUpload) copy the addon file from YSUpload to the attachment directory and add a record in phpBB's database, linking the attachment record to the already made post (with the original upload time).
 
-## To Do
+### To Do
 
 - Implement file transfer process for YSUpload
 - Add method to `PhpbbClient` which can add attachment record to database
@@ -28,9 +28,9 @@ This application, developed with the Laravel PHP Framework (see below), is used 
 - Implement actual posting method using cURL in `PhpbbClient`
 - More work not yet realized
 
-*Copyright (c) 2015 YSFlight Headquarters. All rights reserved.*
+##### *Copyright (c) 2015 YSFlight Headquarters. All rights reserved.*
 
-Developed by [Eric Tendian](https://github.com/EricTendian).
+##### Developed by [Eric Tendian](https://github.com/EricTendian).
 
 ---
 
