@@ -6,14 +6,14 @@ use Symfony\Component\Console\Input\InputArgument;
 
 use YSFHQ\Migrator\Activities as MigratorActivities;
 
-class DrupalAddonMigrateCommand extends Command {
+class YSUploadMigrateCommand extends Command {
 
 	/**
 	 * The console command name.
 	 *
 	 * @var string
 	 */
-	protected $name = 'drupal:addons';
+	protected $name = 'ysupload:migrateall';
 
 	/**
 	 * The console command description.
@@ -40,7 +40,12 @@ class DrupalAddonMigrateCommand extends Command {
 	public function fire()
 	{
 		$migrator = new MigratorActivities();
-		$migrator->exportAddonsFromDrupal();
+		$this->info('Starting addon metadata export process from YSUpload...');
+		$migrator->exportAddonMetaFromYSUpload();
+		$this->info('Metadata export complete.');
+		$this->info('Starting addon file export process from YSUpload...');
+		$migrator->exportAddonDataFromYSUpload();
+		$this->info('File export complete.');
 	}
 
 	/**

@@ -1,7 +1,9 @@
 <?php namespace YSFHQ\Migrator\Commands;
 
-use Laracasts\Commander\CommandHandler,
-    YSFHQ\Infrastructure\Clients\YSUploadClient;
+use Carbon\Carbon,
+    Laracasts\Commander\CommandHandler,
+    YSFHQ\Infrastructure\Clients\YSUploadClient,
+    YSFHQ\Migrator\Post;
 
 class ExportYSUploadAddonMetaCommandHandler implements CommandHandler {
 
@@ -35,6 +37,8 @@ class ExportYSUploadAddonMetaCommandHandler implements CommandHandler {
 [img]$addon->image_url[/img]
 
 $addon->meta_desc
+
+---
 
 Originally posted by $addon->uploader_username
 

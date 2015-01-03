@@ -12,4 +12,5 @@
 */
 
 Artisan::add(new BbcodePhpbbCommand);
-Artisan::add(new DrupalAddonMigrateCommand);
+Artisan::add(new DrupalMigrateCommand);
+Artisan::add(new YSUploadMigrateCommand);

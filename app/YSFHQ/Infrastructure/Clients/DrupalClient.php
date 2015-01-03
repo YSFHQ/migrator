@@ -78,7 +78,8 @@ class DrupalClient extends DatabaseClient
                 'drupal_node_revisions.title',
                 'drupal_node_revisions.body',
                 'drupal_node_revisions.teaser',
-                'drupal_node.created'
+                'drupal_node.created',
+                'drupal_users.name'
             )->get();
     }
 

@@ -1,6 +1,7 @@
 <?php namespace YSFHQ\Migrator\Commands;
 
-use Laracasts\Commander\CommandHandler,
+use Carbon\Carbon,
+    Laracasts\Commander\CommandHandler,
     YSFHQ\Infrastructure\Clients\YSUploadClient;
 
 class ExportYSUploadAddonDataCommandHandler implements CommandHandler {

@@ -5,7 +5,7 @@ use \Exception;
 class DatabaseClient
 {
 
-    protected $per_page = 500;
+    protected $per_page = 100;
     protected $page = 1;
 
     protected function getConnection($conn = '')

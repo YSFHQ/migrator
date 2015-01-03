@@ -47,32 +47,33 @@ $addon->field_prev_title[img]$addon->field_prev_url[/img]
 
 $addon->field_desc_value
 
+---
+
 Originally posted by $addon->name
+
 Credits:
 $addon->field_credit_value
-
-License: N/A
 
 [size=150][url=$addon->field_dl_url]$addon->field_dl_title[/url][/size]
 EOT;
                 $post->new_topic = true;
-                $post->forum_id = 264;
+                $post->forum_id = 279;
                 switch ($addon->field_modtype_value) {
                     case 'aircraft':
-                        $post->forum_id = 169;
+                        $post->forum_id = 275;
                         break;
                     case 'scenery':
-                        $post->forum_id = 170;
+                        $post->forum_id = 277;
                         break;
                     case 'weapon':
-                        $post->forum_id = 235;
+                        $post->forum_id = 278;
                         break;
                     case 'pack':
                     case 'hqpack':
-                        $post->forum_id = 168;
+                        $post->forum_id = 276;
                         break;
                     case 'misc':
-                        $post->forum_id = 264;
+                        $post->forum_id = 279;
                         break;
                 }
                 $post->posted_on = Carbon::createFromTimeStamp($addon->created)->toDateTimeString();
