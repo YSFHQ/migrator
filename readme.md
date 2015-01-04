@@ -31,10 +31,12 @@ This application, developed with the Laravel PHP Framework (see below), is used 
 
 ### To Do
 
+- Add posttype column to schema
+  use forum_id and topic_id to generate for existing posts
+- YSUpload meta import should search for existing Drupal addon posts which use YSUpload
+  if it finds it, then update post_id in YSUpload post model to point to Drupal post
 - Implement file transfer process for YSUpload
 - Add method to `PhpbbClient` which can add attachment record to database
-- Implement queueing for making posts on forum
-- Implement actual posting method using cURL in `PhpbbClient`
 - More work not yet realized
 
 ##### *Copyright (c) 2015 YSFlight Headquarters. All rights reserved.*

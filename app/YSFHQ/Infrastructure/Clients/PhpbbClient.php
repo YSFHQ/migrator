@@ -84,7 +84,6 @@ class PhpbbClient extends DatabaseClient
         if (count($attributes)) {
             if ($attributes['topic_id']) {
                 $response = $this->postReply($attributes['forum_id'], $attributes['topic_id'], $attributes['subject'], $attributes['body']);
-                // file_put_contents('/tmp/form.html', $response->getBody());
                 $url = $response->getEffectiveUrl();
                 if (strpos($url, '#p')) {
                     // now we get the post id from the URL
