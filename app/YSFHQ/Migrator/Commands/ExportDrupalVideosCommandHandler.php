@@ -39,6 +39,7 @@ class ExportDrupalVideosCommandHandler implements CommandHandler {
                 $post = new Post;
                 $post->legacy_id = $video->nid;
                 $post->source = 'drupal';
+                $post->type = 'video';
                 $post->username = $video->name;
                 $post->subject = $video->title;
                 $post->body = <<<EOT

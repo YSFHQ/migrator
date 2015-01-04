@@ -29,6 +29,7 @@ class ExportYSUploadAddonMetaCommandHandler implements CommandHandler {
                 $post = new Post;
                 $post->legacy_id = $addon->id;
                 $post->source = 'ysupload';
+                $post->type = 'addon';
                 $post->username = $addon->uploader_username;
                 $post->subject = '['.strtoupper($addon->meta_category).'] '.$addon->meta_name;
 

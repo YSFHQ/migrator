@@ -33,6 +33,7 @@ class ExportDrupalStoriesCommandHandler implements CommandHandler {
                 $post = new Post;
                 $post->legacy_id = $story->nid;
                 $post->source = 'drupal';
+                $post->type = 'story';
                 $post->username = $story->name;
                 $post->subject = $story->title;
                 $post->body = <<<EOT

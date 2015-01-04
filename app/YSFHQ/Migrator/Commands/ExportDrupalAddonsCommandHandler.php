@@ -30,6 +30,7 @@ class ExportDrupalAddonsCommandHandler implements CommandHandler {
                 $post = new Post;
                 $post->legacy_id = $addon->nid;
                 $post->source = 'drupal';
+                $post->type = 'addon';
                 $post->username = $addon->name;
                 $post->subject = '['.strtoupper($addon->field_modtype_value).'] '.$addon->title;
 

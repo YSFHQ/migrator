@@ -33,6 +33,7 @@ class ExportDrupalScreenshotsCommandHandler implements CommandHandler {
                 $post = new Post;
                 $post->legacy_id = $screenshot->nid;
                 $post->source = 'drupal';
+                $post->type = 'screenshot';
                 $post->username = $screenshot->name;
                 $post->subject = $screenshot->title;
                 $post->body = <<<EOT

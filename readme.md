@@ -31,8 +31,6 @@ This application, developed with the Laravel PHP Framework (see below), is used 
 
 ### To Do
 
-- Add posttype column to schema
-  use forum_id and topic_id to generate for existing posts
 - YSUpload meta import should search for existing Drupal addon posts which use YSUpload
   if it finds it, then update post_id in YSUpload post model to point to Drupal post
 - Implement file transfer process for YSUpload

@@ -17,6 +17,7 @@ class CreatePostsTable extends Migration {
             $table->integer('legacy_id');
             $table->integer('phpbb_id')->nullable()->default(null);
             $table->enum('source', ['drupal', 'ysupload']);
+            $table->enum('type', ['addon', 'screenshot', 'video', 'story']);
             $table->string('username')->nullable()->default(null);
             $table->string('subject');
             $table->longText('body');
