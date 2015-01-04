@@ -72,6 +72,13 @@ EOT;
                         break;
                 }
                 $post->posted_on = $addon->upload_timestamp;
+
+                // let's search to see if there is already a drupal post linking to this upload
+                // conditions: source=='drupal' && type=='addon' && body contains ysupload.com/download.php or ysupload.com/getFile.php
+                // if it meets those conditions, then we want to pull the YSU ID out of the link and see if it matches
+                // if it DOES match, then set the YSU phpbb_id to the match's phpbb_id
+                // don't queue for import
+
                 $post->save();
                 Queue::push('YSFHQ\Migrator\Tasks\ImportTasks@makePost', ['id' => $post->id]);
             }
