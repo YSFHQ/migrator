@@ -22,7 +22,9 @@ class UpdateImportedPostCommandHandler implements CommandHandler {
     {
         $phpbb_user_id = $this->phpbb->getUserIdByUsername($command->username);
         if ($phpbb_user_id) {
-            $this->phpbb->updatePost($command->phpbb_id, ['poster_id' => $phpbb_user_id]);
+            $this->phpbb->updatePost($command->phpbb_id, ['poster_id' => $phpbb_user_id, 'post_time' => $command->post_time]);
+        } else {
+            $this->phpbb->updatePost($command->phpbb_id, ['post_time' => $command->post_time]);
         }
     }
 

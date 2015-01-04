@@ -45,9 +45,7 @@ EOT;
                 $post->posted_on = Carbon::createFromTimeStamp($story->created)->toDateTimeString();
                 $post->save();
                 Queue::push('YSFHQ\Migrator\Tasks\ImportTasks@makePost', ['id' => $post->id]);
-                break;
             }
-            break;
             echo 'Page '.$page.' complete'.PHP_EOL;
             $page++;
         }

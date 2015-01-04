@@ -13,13 +13,19 @@ class UpdateImportedPostCommand {
     public $phpbb_id;
 
     /**
+     * @var string
+     */
+    public $post_time;
+
+    /**
      * @param string username
      * @param string phpbb_id
      */
-    public function __construct($username, $phpbb_id)
+    public function __construct($phpbb_id, $username, $post_time)
     {
-        $this->username = $username;
         $this->phpbb_id = $phpbb_id;
+        $this->username = $username;
+        $this->post_time = $post_time;
     }
 
 }

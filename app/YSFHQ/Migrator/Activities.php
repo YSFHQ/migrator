@@ -1,8 +1,8 @@
 <?php namespace YSFHQ\Migrator;
 
 use \Exception;
-use Illuminate\Support\Facades\Log;
-use Laracasts\Commander\CommanderTrait;
+use Illuminate\Support\Facades\Log,
+    Laracasts\Commander\CommanderTrait;
 
 use YSFHQ\Migrator\Commands\FixBbcodeCommand,
     YSFHQ\Migrator\Commands\ExportDrupalScreenshotsCommand,
@@ -70,8 +70,13 @@ class Activities
     public function updatePostAuthor($phpbb_id = null)
     {
         if (isset($phpbb_id)) {
-            $post = Post::where('phpbb_id', $phpbb_id)->first();
-            return $this->execute(UpdateImportedPostCommand::class, ['username' => $post->username, 'phpbb_id' => $post->phpbb_id]);
+            if ($post = Post::where('phpbb_id', $phpbb_id)->first()) {
+                return $this->execute(UpdateImportedPostCommand::class, [
+                    'phpbb_id' => $post->phpbb_id,
+                    'username' => $post->username,
+                    'post_time' => strtotime($post->posted_on),
+                ]);
+            }
         }
         return false;
     }
