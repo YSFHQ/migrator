@@ -4,6 +4,7 @@ use Carbon\Carbon,
     Illuminate\Support\Facades\Queue,
     Laracasts\Commander\CommandHandler;
 use YSFHQ\Infrastructure\Clients\YSUploadClient,
+    YSFHQ\Infrastructure\Helpers\BBCodeHelper,
     YSFHQ\Migrator\Post;
 
 class ExportYSUploadAddonMetaCommandHandler implements CommandHandler {
@@ -33,6 +34,8 @@ class ExportYSUploadAddonMetaCommandHandler implements CommandHandler {
                 $post->username = $addon->uploader_username;
                 $post->subject = '['.strtoupper($addon->meta_category).'] '.$addon->meta_name;
 
+                $addon->meta_desc = BBCodeHelper::convertHtmlToBBCode($addon->meta_desc);
+
                 $post->body = <<<EOT
 [size=150]$addon->meta_name[/size]
 [i]Category: $addon->meta_category / Version: $addon->version[/i]
@@ -50,37 +53,37 @@ License/Credits: $addon->modPerms
 [size=150][url=$addon->filename]DOWNLOAD[/url][/size]
 EOT;
 
-                $post->forum_id = 264;
-                switch ($addon->meta_category) {
-                    case 'Aircraft':
-                    case 'Challenge':
-                        $post->forum_id = 169;
+                $post->forum_id = 279;
+                switch (strtolower($addon->meta_category)) {
+                    case 'aircraft':
+                    case 'challenge':
+                        $post->forum_id = 275;
                         break;
-                    case 'Maps':
-                    case 'Scenery':
-                        $post->forum_id = 170;
+                    case 'maps':
+                    case 'scenery':
+                        $post->forum_id = 277;
                         break;
-                    case 'Applications':
-                        $post->forum_id = 236;
+                    case 'applications':
+                        $post->forum_id = 280;
                         break;
-                    case 'Miscellaneous':
-                    case 'Weapons':
-                        $post->forum_id = 235;
+                    case 'miscellaneous':
+                    case 'weapons':
+                        $post->forum_id = 278;
                         break;
-                    case 'The Dump':
-                        $post->forum_id = 265;
+                    case 'the dump':
+                        $post->forum_id = 283;
                         break;
                 }
                 $post->posted_on = $addon->upload_timestamp;
 
-                // let's search to see if there is already a drupal post linking to this upload
-                // conditions: source=='drupal' && type=='addon' && body contains ysupload.com/download.php or ysupload.com/getFile.php
-                // if it meets those conditions, then we want to pull the YSU ID out of the link and see if it matches
-                // if it DOES match, then set the YSU phpbb_id to the match's phpbb_id
-                // don't queue for import
+                if ($post_id = Post::findYSUploadForumPost($addon->id)) {
+                    $post->phpbb_id = $post_id;
+                }
 
                 $post->save();
-                Queue::push('YSFHQ\Migrator\Tasks\ImportTasks@makePost', ['id' => $post->id]);
+                if (!isset($post->phpbb_id)) {
+                    Queue::push('YSFHQ\Migrator\Tasks\ImportTasks@makePost', ['id' => $post->id]);
+                }
             }
             echo 'Page '.$page.' complete'.PHP_EOL;
             $page++;

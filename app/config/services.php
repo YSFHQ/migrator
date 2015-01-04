@@ -33,6 +33,7 @@ return array(
 		'user_agent' => 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36',
 		'phpbb_username' => '',
 		'phpbb_password' => '',
+		'cookies' => array(),
 	),
 
 );

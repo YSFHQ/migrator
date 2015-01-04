@@ -15,7 +15,7 @@ class PhpbbClient extends DatabaseClient
 
     public function __construct($per_page = 1000, $page = 1)
     {
-        $this->cookies = new CookieJar();
+        $this->cookies = new CookieJar(false, Config::get('services.ysfhq.cookies'));
         $this->http = new HttpClient([
             'base_url' => Config::get('services.ysfhq.phpbb_url'),
             'defaults' => [
@@ -25,9 +25,9 @@ class PhpbbClient extends DatabaseClient
             ]
         ]);
         parent::__construct($per_page, $page);
-        if (!$this->login(Config::get('services.ysfhq.phpbb_username'), Config::get('services.ysfhq.phpbb_password'))) {
-            Log::error('Failed login to phpBB.');
-        }
+        // if (!$this->login(Config::get('services.ysfhq.phpbb_username'), Config::get('services.ysfhq.phpbb_password'))) {
+        //     Log::error('Failed login to phpBB.');
+        // }
     }
 
     private function login($username = '', $password = '')
