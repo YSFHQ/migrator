@@ -6,6 +6,11 @@ class Post extends Eloquent {
 
     protected $table = 'posts';
 
+    public function attachment()
+    {
+        return $this->belongsTo('File');
+    }
+
     public static function findYSUploadForumPost($ysupload_id = null)
     {
         if ($ysupload_id) {

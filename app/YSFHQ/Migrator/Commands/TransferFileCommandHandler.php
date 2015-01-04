@@ -3,7 +3,7 @@
 use Laracasts\Commander\CommandHandler;
 use YSFHQ\Infrastructure\Clients\PhpbbClient;
 
-class ImportPostCommandHandler implements CommandHandler {
+class TransferFileCommandHandler implements CommandHandler {
 
     private $phpbb;
 
@@ -16,17 +16,16 @@ class ImportPostCommandHandler implements CommandHandler {
      * Handle the command.
      *
      * @param object $command
-     * @return int The post_id from phpBB of the new post.
+     * @return void
      */
     public function handle($command)
     {
-        $post = $command->post;
-        return $this->phpbb->makePost([
-            'forum_id' => $post->forum_id,
-            'topic_id' => $post->topic_id,
-            'subject'  => $post->subject,
-            'body'     => $post->body
-        ]);
+        // copy the file
+        if (copy($file->local_path, '/var/www/forum.ysfhq.com/files/'.$file->physical_path)) {
+            // add the attachment to the post
+            $file->phpbb_attachment_id = $this->phpbb->saveAttachment($file);
+            $file->save();
+        }
     }
 
 }

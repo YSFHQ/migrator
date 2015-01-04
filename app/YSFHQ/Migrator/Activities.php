@@ -2,6 +2,7 @@
 
 use \Exception;
 use Illuminate\Support\Facades\Log,
+    Illuminate\Support\Facades\Queue,
     Laracasts\Commander\CommanderTrait;
 
 use YSFHQ\Migrator\Commands\FixBbcodeCommand,
@@ -10,8 +11,8 @@ use YSFHQ\Migrator\Commands\FixBbcodeCommand,
     YSFHQ\Migrator\Commands\ExportDrupalStoriesCommand,
     YSFHQ\Migrator\Commands\ExportDrupalAddonsCommand,
     YSFHQ\Migrator\Commands\ExportYSUploadAddonMetaCommand,
-    YSFHQ\Migrator\Commands\ExportYSUploadAddonDataCommand,
     YSFHQ\Migrator\Commands\ImportPostCommand,
+    YSFHQ\Migrator\Commands\TransferYSUploadAddonDataCommand,
     YSFHQ\Migrator\Commands\UpdateImportedPostCommand;
 
 class Activities
@@ -77,6 +78,25 @@ class Activities
                     'post_time' => strtotime($post->posted_on),
                 ]);
             }
+        }
+        return false;
+    }
+
+    public function transferYSUploadFiles()
+    {
+        $posts = Post::where('source', 'ysupload')->where('phpbb_id', '>', 0)->get()
+        foreach ($posts as $post) {
+            if (!$post->attachment()) {
+                $id = $this->execute(PopulateFileCommand::class, ['post' => $post]);
+                Queue::push('YSFHQ\Migrator\Tasks\FileTasks@attach', ['post_id' => $id]);
+            }
+        }
+    }
+
+    public function copyYSUploadFilesToPhpbb($file_id = null)
+    {
+        if ($file_id && $file = File::find($file_id)) {
+            return $this->execute(TransferFileCommand::class, ['file' => $file]);
         }
         return false;
     }

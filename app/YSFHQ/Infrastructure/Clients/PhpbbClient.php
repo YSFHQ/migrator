@@ -71,6 +71,14 @@ class PhpbbClient extends DatabaseClient
             ->get();
     }
 
+    public function getPostDataFromId($id = null)
+    {
+        return $this->getConnection('phpbb')
+            ->table('phpbb_posts')
+            ->where('post_id', $id)
+            ->first();
+    }
+
     public function updatePost($id = null, $attributes = [])
     {
         return $this->getConnection('phpbb')
@@ -83,7 +91,12 @@ class PhpbbClient extends DatabaseClient
     {
         if (count($attributes)) {
             if ($attributes['topic_id']) {
-                $response = $this->postReply($attributes['forum_id'], $attributes['topic_id'], $attributes['subject'], $attributes['body']);
+                $response = $this->postReply(
+                    $attributes['forum_id'],
+                    $attributes['topic_id'],
+                    $attributes['subject'],
+                    $attributes['body']
+                );
                 $url = $response->getEffectiveUrl();
                 if (strpos($url, '#p')) {
                     // now we get the post id from the URL
@@ -165,6 +178,38 @@ class PhpbbClient extends DatabaseClient
         ]);
 
         return $this->http->send($request);
+    }
+
+    public function saveAttachment($file = null)
+    {
+        if ($file) {
+            $id = $this->getConnection('phpbb')->table('phpbb_attachments')->insertGetId([
+                'post_msg_id'           => $file->post_msg_id,
+                'topic_id'              => $file->topic_id,
+                'in_message'            => '0',
+                'poster_id'             => $file->poster_id,
+                'is_orphan'             => '0',
+                'physical_filename'     => $file->physical_filename,
+                'real_filename'         => $file->real_filename,
+                'download_count'        => $file->download_count,
+                'attach_comment'        => '',
+                'extension'             => $file->extension,
+                'mimetype'              => $file->mimetype,
+                'filesize'              => $file->filesize,
+                'filetime'              => $file->filetime,
+                'thumbnail'             => '0'
+            ]);
+            if ($id) {
+                $this->getConnection('phpbb')->table('phpbb_posts')
+                    ->where('post_id', $file->post_msg_id)->update(['post_attachment' => '1']);
+                return $id;
+            }
+        }
+
+        return null;
+        // INSERT INTO `phpbb`.`phpbb_attachments` (`attach_id`, `post_msg_id`, `topic_id`, `in_message`, `poster_id`, `is_orphan`, `physical_filename`, `real_filename`, `download_count`, `attach_comment`, `extension`, `mimetype`, `filesize`, `filetime`, `thumbnail`)
+        //      VALUES (NULL, '82703', '7512', '0', '78', '1', '78_5b1d21ee26decf67229149f27797c5d8', 'Tri-Angel.zip', '74', '', 'zip', 'application/zip', '1029631', '1420403353', '0');
+        // UPDATE  `phpbb`.`phpbb_posts` SET  `post_attachment` =  '1' WHERE  `phpbb_posts`.`post_id` =82703;
     }
 
 }

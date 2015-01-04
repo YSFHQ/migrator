@@ -31,9 +31,14 @@ class YSUploadClient extends DatabaseClient
             )->get();
     }
 
-    public function transferFiles($legacy_id = null)
+    public function getFileDataFromId($legacy_id = null)
     {
-        throw new Exception("Unimplemented method");
+        $result = $this->getConnection('ysupload')
+            ->table('files')
+            ->where('id', $legacy_id)
+            ->first();
+        // do some other things like getting filesize, etc.
+        return $result;
     }
 
 }

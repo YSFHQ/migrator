@@ -47,7 +47,7 @@ EOT;
                 $post->forum_id = 281;
                 $post->posted_on = Carbon::createFromTimeStamp($screenshot->created)->toDateTimeString();
                 $post->save();
-                Queue::push('YSFHQ\Migrator\Tasks\ImportTasks@makePost', ['id' => $post->id]);
+                Queue::push('YSFHQ\Migrator\Tasks\PostTasks@makePost', ['id' => $post->id]);
             }
             echo 'Page '.$page.' complete'.PHP_EOL;
             $page++;
