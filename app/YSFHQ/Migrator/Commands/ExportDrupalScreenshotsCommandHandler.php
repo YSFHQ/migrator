@@ -50,6 +50,7 @@ EOT;
             }
             echo 'Page '.$page.' complete'.PHP_EOL;
             $page++;
+            break;
         }
     }
 

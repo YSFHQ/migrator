@@ -2,6 +2,7 @@
 
 use \Exception;
 use GuzzleHttp\Client as HttpClient,
+    GuzzleHttp\Cookie\CookieJar,
     Illuminate\Support\Facades\Config,
     Illuminate\Support\Facades\Log;
 use YSFHQ\Migrator\Post;
@@ -10,9 +11,11 @@ class PhpbbClient extends DatabaseClient
 {
 
     private $http;
+    private $cookies;
 
     public function __construct($per_page = 1000, $page = 1)
     {
+        $this->cookies = new CookieJar();
         $this->http = new HttpClient([
             'base_url' => Config::get('services.ysfhq.phpbb_url'),
             'defaults' => [
@@ -30,7 +33,7 @@ class PhpbbClient extends DatabaseClient
     private function login($username = '', $password = '')
     {
         $request = $this->http->createRequest('POST', 'ucp.php', [
-            'cookies' => true,
+            'cookies' => $this->cookies,
             'allow_redirects' => true,
             'query' => ['mode' => 'login'],
             'body' => [
@@ -42,12 +45,22 @@ class PhpbbClient extends DatabaseClient
             ]
         ]);
         $response = $this->http->send($request);
+        // we should instead check to see if cookie has been set
         return $response->getStatusCode() == 200;
     }
 
     private function logout()
     {
         return false;
+    }
+
+    public function getUserIdByUsername($username = '')
+    {
+        return $this->getConnection('phpbb')
+            ->table('phpbb_users')
+            ->where('username', $username)
+            ->orWhere('username_clean', strtolower($username))
+            ->pluck('user_id');
     }
 
     public function getPosts($page = 1)
@@ -70,70 +83,89 @@ class PhpbbClient extends DatabaseClient
     {
         if (count($attributes)) {
             if ($attributes['topic_id']) {
-                $result = $this->postReply($attributes['forum_id'], $attributes['topic_id'], $attributes['subject'], $attributes['body']);
+                $response = $this->postReply($attributes['forum_id'], $attributes['topic_id'], $attributes['subject'], $attributes['body']);
+                // file_put_contents('/tmp/form.html', $response->getBody());
+                $url = $response->getEffectiveUrl();
+                if (strpos($url, '#p')) {
+                    // now we get the post id from the URL
+                    $post_id = substr($url, strpos($url, '#p')+2);
+                    return intval($post_id);
+                }
             } else {
-                $result = $this->postNewTopic($attributes['forum_id'], $attributes['subject'], $attributes['body']);
+                $response = $this->postNewTopic($attributes['forum_id'], $attributes['subject'], $attributes['body']);
+                $url = $response->getEffectiveUrl();
+                if (strpos($url, 'viewtopic.php')) {
+                    // get topic or post id from result body
+                    $post_id = $response->getBody();
+                    $post_id = substr($post_id, strpos($post_id, '<div id="post_content')+21);
+                    $post_id = substr($post_id, 0, strpos($post_id, '">'));
+                    return intval($post_id);
+                }
             }
-            Log::info($result);
-            // get topic or post id from result
-            return 1; // phpBB post ID
         }
         return -1;
     }
 
     private function postNewTopic($forum_id, $topic_title, $message)
     {
-        $token = $this->getToken($forum_id);
+        $fields = [
+            'subject' => $topic_title,
+            'addbbcode20' => 100,
+            'message' => $message,
+            'lastclick' => time()-30,
+            'post' => 'Submit',
+            'topictype' => 0,
+            // 'disable_bbcode' => false,
+            // 'disable_smilies' => false,
+            // 'disable_magic_url' => false,
+            // 'attach_sig' => false,
+            'topic_time_limit' => 0,
+            'show_panel' => 'options-panel',
+            'creation_time' => time()-60,
+            'form_token' => sha1(time()), // random string, our modified phpBB does not check tokens
+            'poll_title' => '',
+            'poll_option_text' => '',
+            'poll_max_options' => 1,
+            'poll_length' => 0
+        ];
+
         $request = $this->http->createRequest('POST', 'posting.php', [
-            'cookies' => true,
+            'cookies' => $this->cookies,
             'allow_redirects' => true,
             'query' => ['mode' => 'post', 'f' => $forum_id],
-            'body' => [
-                'subject' => $topic_title,
-                'addbbcode20' => 100,
-                'message' => $message,
-                'lastclick' => time(),
-                'post' => 'Submit',
-                'topictype' => 0,
-                'disable_bbcode' => 0,
-                'disable_smilies' => 0,
-                'disable_magic_url' => 0,
-                'attach_sig' => 0,
-                'topic_time_limit' => 0,
-                'show_panel' => 'options-panel',
-                'creation_time' => time(),
-                'form_token' => $token,
-                'poll_title' => '',
-                'poll_option_text' => '',
-                'poll_max_options' => 1,
-                'poll_length' => 0
-            ]
+            'body' => $fields
         ]);
-        $response = $this->http->send($request);
-        return $response->getEffectiveUrl();
+
+        return $this->http->send($request);
     }
 
-    private function postReply()
+    private function postReply($forum_id, $topic_id, $topic_title, $message)
     {
-        return false;
-    }
+        $fields = [
+            'subject' => $topic_title,
+            'addbbcode20' => 100,
+            'message' => $message,
+            // 'topic_cur_post_id' => 1,
+            'lastclick' => time()-30,
+            'post' => 'Submit',
+            // 'disable_bbcode' => false,
+            // 'disable_smilies' => false,
+            // 'disable_magic_url' => false,
+            // 'attach_sig' => false,
+            'topic_time_limit' => 0,
+            'show_panel' => 'options-panel',
+            'creation_time' => time()-60,
+            'form_token' => sha1(time()) // random string, our modified phpBB does not check tokens
+        ];
 
-    private function getToken($forum_id, $topic_id = '')
-    {
-        $response = $this->http->get('posting.php', [
-            'query' => [
-                'mode' => $topic_id ? 'reply' : 'post',
-                'f' => $forum_id,
-                't' => $topic_id
-            ],
+        $request = $this->http->createRequest('POST', 'posting.php', [
+            'cookies' => $this->cookies,
+            'allow_redirects' => true,
+            'query' => ['mode' => 'reply', 'f' => $forum_id, 't' => $topic_id],
+            'body' => $fields
         ]);
-        if ($body = $response->getBody()) {
-            $token = substr($body, strpos($body, '<input type="hidden" name="form_token" value="')+46);
-            $token = substr($token, 0, strpos($token, '"/>'));
-            Log::info('token: '.$token);
-            return $token;
-        }
-        return false;
+
+        return $this->http->send($request);
     }
 
 }

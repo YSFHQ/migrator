@@ -36,8 +36,6 @@ class ExportDrupalStoriesCommandHandler implements CommandHandler {
                 $post->username = $story->name;
                 $post->subject = $story->title;
                 $post->body = <<<EOT
-$story->teaser
-
 [u][size=150]$story->title[/size][/u]
 [i]by $story->name[/i]
 
@@ -47,7 +45,9 @@ EOT;
                 $post->posted_on = Carbon::createFromTimeStamp($story->created)->toDateTimeString();
                 $post->save();
                 Queue::push('YSFHQ\Migrator\Tasks\ImportTasks@makePost', ['id' => $post->id]);
+                break;
             }
+            break;
             echo 'Page '.$page.' complete'.PHP_EOL;
             $page++;
         }

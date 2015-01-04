@@ -49,7 +49,7 @@ class BBCodeHelper
 
         // Strip all other HTML tags
         $text = strip_tags($text);
-        $html2text = new Html2Text($text);
+        $html2text = new Html2Text($text, ['width' => 0]);
         $text = $html2text->getText();
 
         return $text;

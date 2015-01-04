@@ -1,7 +1,8 @@
 <?php namespace YSFHQ\Migrator\Tasks;
 
 use \Exception;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Log,
+    Illuminate\Support\Facades\Queue;
 use YSFHQ\Migrator\ActivitiesFacade as MigratorActivities,
     YSFHQ\Migrator\Post;
 
@@ -15,7 +16,9 @@ class ImportTasks
             $job->delete();
         } else {
             $post_id = MigratorActivities::importPost($data['id']);
-            if ($post_id) {
+            if ($post_id > 0) {
+                Log::info("Imported: http://forum.ysfhq.com/viewtopic.php?p=$post_id#p$post_id");
+                Queue::push('YSFHQ\Migrator\Tasks\ImportTasks@reLinkPost', ['phpbb_id' => $post_id]);
                 $job->delete();
             } else {
                 Log::error('Posting to forum failed.');
@@ -24,9 +27,10 @@ class ImportTasks
         }
     }
 
-    public function linkPost($job, $data = [])
+    public function reLinkPost($job, $data = [])
     {
-        # code...
+        MigratorActivities::updatePostAuthor($data['phpbb_id']);
+        $job->delete();
     }
 
 }

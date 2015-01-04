@@ -11,7 +11,8 @@ use YSFHQ\Migrator\Commands\FixBbcodeCommand,
     YSFHQ\Migrator\Commands\ExportDrupalAddonsCommand,
     YSFHQ\Migrator\Commands\ExportYSUploadAddonMetaCommand,
     YSFHQ\Migrator\Commands\ExportYSUploadAddonDataCommand,
-    YSFHQ\Migrator\Commands\ImportPostCommand;
+    YSFHQ\Migrator\Commands\ImportPostCommand,
+    YSFHQ\Migrator\Commands\UpdateImportedPostCommand;
 
 class Activities
 {
@@ -81,10 +82,25 @@ class Activities
                 ImportPostCommand::class,
                 ['post' => $post]
             );
-            $post->phpbb_id = $phpbb_post_id;
+            if ($phpbb_post_id > 0) {
+                $post->phpbb_id = $phpbb_post_id;
+                $post->save();
+            }
             return $phpbb_post_id;
         }
         return -1;
+    }
+
+    public function updatePostAuthor($phpbb_id = null)
+    {
+        if (isset($phpbb_id)) {
+            $post = Post::where('phpbb_id', $phpbb_id)->first();
+            return $this->execute(
+                UpdateImportedPostCommand::class,
+                ['username' => $post->username, 'phpbb_id' => $post->phpbb_id]
+            );
+        }
+        return false;
     }
 
 }

@@ -17,8 +17,8 @@ class DrupalClient extends DatabaseClient
             ->join('drupal_content_type_addon', 'drupal_node.nid', '=', 'drupal_content_type_addon.nid')
             ->join('drupal_content_field_prev', 'drupal_node.nid', '=', 'drupal_content_field_prev.nid')
             ->join('drupal_users', 'drupal_node.uid', '=', 'drupal_users.uid')
-            ->where('drupal_node.type', '=', 'addon')
-            ->where('drupal_node.status', '=', 1)
+            ->where('drupal_node.type', 'addon')
+            ->where('drupal_node.status', 1)
             ->skip($this->per_page * ($page - 1))
             ->take($this->per_page)
             ->select(
@@ -75,8 +75,8 @@ class DrupalClient extends DatabaseClient
             ->table('drupal_node')
             ->join('drupal_node_revisions', 'drupal_node.nid', '=', 'drupal_node_revisions.nid')
             ->join('drupal_users', 'drupal_node.uid', '=', 'drupal_users.uid')
-            ->where('drupal_node.type', '=', 'story')
-            ->where('drupal_node.status', '=', 1)
+            ->where('drupal_node.type', 'story')
+            ->where('drupal_node.status', 1)
             ->skip($this->per_page * ($page - 1))->take($this->per_page)
             ->select(
                 'drupal_node.nid',
@@ -95,8 +95,8 @@ class DrupalClient extends DatabaseClient
             ->join('drupal_node_revisions', 'drupal_node.nid', '=', 'drupal_node_revisions.nid')
             ->join('drupal_content_type_'.$type, 'drupal_node.nid', '=', 'drupal_content_type_'.$type.'.nid')
             ->join('drupal_users', 'drupal_node.uid', '=', 'drupal_users.uid')
-            ->where('drupal_node.type', '=', $type)
-            ->where('drupal_node.status', '=', 1)
+            ->where('drupal_node.type', $type)
+            ->where('drupal_node.status', 1)
             ->skip($this->per_page * ($page - 1))->take($this->per_page);
     }
 

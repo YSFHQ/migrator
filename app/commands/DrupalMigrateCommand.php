@@ -13,14 +13,16 @@ class DrupalMigrateCommand extends Command {
      *
      * @var string
      */
-    protected $name = 'drupal:migrateall';
+    protected $name = 'drupal:migrate';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Command description.';
+    protected $description = 'Migrate content from Drupal into phpBB.';
+
+    private $migrator;
 
     /**
      * Create a new command instance.
@@ -39,21 +41,47 @@ class DrupalMigrateCommand extends Command {
      */
     public function fire()
     {
-        $migrator = new MigratorActivities();
+        $this->migrator = new MigratorActivities();
+
+        if ($only = $this->option('only')) {
+            if (in_array($only, ['addon', 'screenshot', 'video', 'story'])) {
+                $this->{'export'.ucwords($this->option('only'))}();
+            } else {
+                $this->error('Invalid option value.');
+            }
+        } else {
+            $this->exportAddon();
+            $this->exportScreenshot();
+            $this->exportVideo();
+            $this->exportStory();
+        }
+    }
+
+    private function exportAddon()
+    {
         $this->info('Starting export of addons from Drupal...');
-        $migrator->exportAddonsFromDrupal();
+        $this->migrator->exportAddonsFromDrupal();
         $this->info('Addon export complete.');
+    }
 
+    private function exportScreenshot()
+    {
         $this->info('Starting export of screenshots from Drupal...');
-        $migrator->exportScreenshotsFromDrupal();
+        $this->migrator->exportScreenshotsFromDrupal();
         $this->info('Screenshot export complete.');
+    }
 
+    private function exportVideo()
+    {
         $this->info('Starting export of videos from Drupal...');
-        $migrator->exportVideosFromDrupal();
+        $this->migrator->exportVideosFromDrupal();
         $this->info('Video export complete.');
+    }
 
+    private function exportStory()
+    {
         $this->info('Starting export of stories from Drupal...');
-        $migrator->exportStoriesFromDrupal();
+        $this->migrator->exportStoriesFromDrupal();
         $this->info('Story export complete.');
     }
 
@@ -77,7 +105,7 @@ class DrupalMigrateCommand extends Command {
     protected function getOptions()
     {
         return array(
-            // array('example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null),
+            array('only', 'o', InputOption::VALUE_OPTIONAL, 'Only import one datatype, either: addon, screenshot, video, story', null),
         );
     }
 

@@ -1,6 +1,7 @@
 <?php namespace YSFHQ\Infrastructure\Clients;
 
 use \Exception;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseClient
 {
@@ -13,7 +14,7 @@ class DatabaseClient
 
     protected function getConnection($conn = '')
     {
-        return \DB::connection($conn);
+        return DB::connection($conn);
     }
 
 }

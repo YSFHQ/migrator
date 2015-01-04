@@ -27,19 +27,25 @@ class ExportDrupalAddonsCommandHandler implements CommandHandler {
         $page = 1;
         while ($addons = $this->drupal->getAddons($page)) {
             foreach ($addons as $addon) {
-                $addon->field_modtype_value = ucwords($addon->field_modtype_value);
-                if (empty($addon->field_dl_title)) $addon->field_dl_title = 'DOWNLOAD';
-                if (!empty($addon->field_blurb_value)) $addon->field_blurb_value = "\n" + $addon->field_blurb_value;
-                if (!empty($addon->field_prev_title)) $addon->field_prev_title += "\n";
-                if (empty($addon->name)) $addon->name = '(Unknown)';
-                $addon->field_desc_value = BBCodeHelper::convertHtmlToBBCode($addon->field_desc_value);
-                $addon->field_credit_value = BBCodeHelper::convertHtmlToBBCode($addon->field_credit_value);
-
                 $post = new Post;
                 $post->legacy_id = $addon->nid;
                 $post->source = 'drupal';
                 $post->username = $addon->name;
-                $post->subject = $addon->title;
+                $post->subject = '['.strtoupper($addon->field_modtype_value).'] '.$addon->title;
+
+                if (!$addon->field_dl_title)
+                    $addon->field_dl_title = 'DOWNLOAD';
+                if ($addon->field_blurb_value)
+                    $addon->field_blurb_value = "\n" . $addon->field_blurb_value;
+                if ($addon->field_prev_title)
+                    $addon->field_prev_title .= "\n";
+                if (!$addon->name)
+                    $addon->name = '(Unknown)';
+
+                $addon->field_modtype_value = ucwords($addon->field_modtype_value);
+                $addon->field_desc_value = BBCodeHelper::convertHtmlToBBCode($addon->field_desc_value);
+                $addon->field_credit_value = BBCodeHelper::convertHtmlToBBCode($addon->field_credit_value);
+
                 $post->body = <<<EOT
 [size=150]$addon->title[/size]
 [i]Category: $addon->field_modtype_value[/i]$addon->field_blurb_value
@@ -51,14 +57,14 @@ $addon->field_desc_value
 ---
 
 Originally posted by $addon->name
-
-Credits:
+[u]Credits:[/u]
 $addon->field_credit_value
 
 [size=150][url=$addon->field_dl_url]$addon->field_dl_title[/url][/size]
 EOT;
+
                 $post->forum_id = 279;
-                switch ($addon->field_modtype_value) {
+                switch (strtolower($addon->field_modtype_value)) {
                     case 'aircraft':
                         $post->forum_id = 275;
                         break;

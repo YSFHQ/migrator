@@ -20,7 +20,7 @@ class YSUploadMigrateCommand extends Command {
 	 *
 	 * @var string
 	 */
-	protected $description = 'Command description.';
+	protected $description = 'Migrate content from YSUpload into phpBB.';
 
 	/**
 	 * Create a new command instance.
