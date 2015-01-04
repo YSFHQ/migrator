@@ -20,68 +20,44 @@ class Activities
 
     public function fixAlignBBCode()
     {
-        return $this->execute(
-            FixBbcodeCommand::class,
-            ['old_bbcode_id' => 88, 'new_bbcode_id' => 130]
-        );
+        return $this->execute(FixBbcodeCommand::class, ['old_bbcode_id' => 88, 'new_bbcode_id' => 130]);
     }
 
     public function exportScreenshotsFromDrupal()
     {
-        return $this->execute(
-            ExportDrupalScreenshotsCommand::class,
-            []
-        );
+        return $this->execute(ExportDrupalScreenshotsCommand::class, []);
     }
 
     public function exportVideosFromDrupal()
     {
-        return $this->execute(
-            ExportDrupalVideosCommand::class,
-            []
-        );
+        return $this->execute(ExportDrupalVideosCommand::class, []);
     }
 
     public function exportStoriesFromDrupal()
     {
-        return $this->execute(
-            ExportDrupalStoriesCommand::class,
-            []
-        );
+        return $this->execute(ExportDrupalStoriesCommand::class, []);
     }
 
     public function exportAddonsFromDrupal()
     {
-        return $this->execute(
-            ExportDrupalAddonsCommand::class,
-            []
-        );
+        return $this->execute(ExportDrupalAddonsCommand::class, []);
     }
 
     public function exportAddonMetaFromYSUpload()
     {
-        return $this->execute(
-            ExportYSUploadAddonMetaCommand::class,
-            []
-        );
+        return $this->execute(ExportYSUploadAddonMetaCommand::class, []);
     }
 
     public function exportAddonDataFromYSUpload()
     {
-        return $this->execute(
-            ExportYSUploadAddonDataCommand::class,
-            []
-        );
+        return $this->execute(ExportYSUploadAddonDataCommand::class, []);
     }
 
     public function importPost($post_id = null)
     {
         if (isset($post_id)) {
             $post = Post::find($post_id);
-            $phpbb_post_id = $this->execute(
-                ImportPostCommand::class,
-                ['post' => $post]
-            );
+            $phpbb_post_id = $this->execute(ImportPostCommand::class, ['post' => $post]);
             if ($phpbb_post_id > 0) {
                 $post->phpbb_id = $phpbb_post_id;
                 $post->save();
@@ -95,10 +71,7 @@ class Activities
     {
         if (isset($phpbb_id)) {
             $post = Post::where('phpbb_id', $phpbb_id)->first();
-            return $this->execute(
-                UpdateImportedPostCommand::class,
-                ['username' => $post->username, 'phpbb_id' => $post->phpbb_id]
-            );
+            return $this->execute(UpdateImportedPostCommand::class, ['username' => $post->username, 'phpbb_id' => $post->phpbb_id]);
         }
         return false;
     }
