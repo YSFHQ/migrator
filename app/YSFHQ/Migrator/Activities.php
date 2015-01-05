@@ -85,7 +85,7 @@ class Activities
     {
         $posts = Post::where('source', 'ysupload')->where('phpbb_id', '>', 0)->get();
         foreach ($posts as $post) {
-            if (!$post->attachment()) {
+            if (!$post->attachment) {
                 $id = $this->execute(PopulateFileCommand::class, ['post' => $post]);
                 Queue::push('YSFHQ\Migrator\Tasks\FileTasks@createAttachment', ['post_id' => $id]);
             }
