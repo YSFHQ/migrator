@@ -49,7 +49,11 @@ class Activities
                 $dest = $path->dest;
             } else {
                 Log::error('No redirect found for URL: '.Request::fullUrl());
-                $dest = 'http://forum.ysfhq.com/';
+                if ($domain == 'ysupload') {
+                    $dest = 'http://forum.ysfhq.com/viewforum.php?f=234';
+                } else {
+                    $dest = 'http://forum.ysfhq.com/';
+                }
             }
         }
 
