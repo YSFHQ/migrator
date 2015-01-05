@@ -15,6 +15,8 @@ use YSFHQ\Migrator\Commands\FixBbcodeCommand,
     YSFHQ\Migrator\Commands\UpdateImportedPostCommand,
     YSFHQ\Migrator\Commands\PopulateFileCommand,
     YSFHQ\Migrator\Commands\TransferFileCommand;
+use YSFHQ\Migrator\File,
+    YSFHQ\Migrator\Post;
 
 class Activities
 {
