@@ -1,5 +1,7 @@
 <?php
 
+use YSFHQ\Redirector\Activities as RedirectorActivities;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -11,7 +13,8 @@
 |
 */
 
-Route::get('/', function()
+Route::any('{any}', function($route)
 {
-	return View::make('hello');
-});
+    $redirector = new RedirectorActivities();
+	$redirector->redirect($route);
+})->where('any', '(.*)');
