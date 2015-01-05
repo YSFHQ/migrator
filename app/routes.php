@@ -16,5 +16,5 @@ use YSFHQ\Redirector\Activities as RedirectorActivities;
 Route::any('{any}', function($route)
 {
     $redirector = new RedirectorActivities();
-	$redirector->redirect($route);
+	return Redirect::away($redirector->getRedirectUrl($route), 301);
 })->where('any', '(.*)');
