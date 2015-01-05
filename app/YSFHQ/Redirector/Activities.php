@@ -16,6 +16,7 @@ class Activities
     {
         $domain = Request::root();
         $route = strtolower(str_replace($domain, '', Request::fullUrl()));
+        if (empty($route)) $route = '/';
 
         if (strpos($domain, 'drupal.ysfhq.com')!==false) {
             $domain = 'drupal';
@@ -49,11 +50,7 @@ class Activities
                 $dest = $path->dest;
             } else {
                 Log::error('No redirect found for URL: '.Request::fullUrl());
-                if ($domain == 'ysupload') {
-                    $dest = 'http://forum.ysfhq.com/viewforum.php?f=234';
-                } else {
-                    $dest = 'http://forum.ysfhq.com/';
-                }
+                $dest = 'http://forum.ysfhq.com/';
             }
         }
 
