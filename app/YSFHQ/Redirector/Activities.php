@@ -15,17 +15,20 @@ class Activities
     public function getRedirectUrl($path)
     {
         $domain = Request::root();
-        $route = str_replace($domain, '', Request::fullUrl());
+        $route = strtolower(str_replace($domain, '', Request::fullUrl()));
 
         if (strpos($domain, 'drupal.ysfhq.com')!==false) {
+            $domain = 'drupal';
             if (starts_with($route, '/node/')) {
                 $nid = substr($route, strrpos($route, '/')+1);
                 $post = Post::where('source', 'drupal')->where('legacy_id', $nid)->first();
             }
         }
         if (strpos($domain, 'ysupload.com')!==false) {
+            $domain = 'ysupload';
             if (starts_with($route, '/download.php') || starts_with($route, '/getfile.php')) {
-                if (Input::get('id')) {
+                $id = Input::get('id');
+                if ($id) {
                     $post = Post::where('source', 'ysupload')->where('legacy_id', $id)->first();
                 }
             }
