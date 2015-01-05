@@ -14,7 +14,8 @@ use YSFHQ\Migrator\Commands\FixBbcodeCommand,
     YSFHQ\Migrator\Commands\ImportPostCommand,
     YSFHQ\Migrator\Commands\UpdateImportedPostCommand,
     YSFHQ\Migrator\Commands\PopulateFileCommand,
-    YSFHQ\Migrator\Commands\TransferFileCommand;
+    YSFHQ\Migrator\Commands\TransferFileCommand,
+    YSFHQ\Migrator\Commands\UpdateDownloadLinkCommand;
 use YSFHQ\Migrator\Attachment,
     YSFHQ\Migrator\Post;
 
@@ -97,10 +98,23 @@ class Activities
     {
         if ($file_id && $file = Attachment::find($file_id)) {
             if ($this->execute(TransferFileCommand::class, ['file' => $file])) {
+                $this->updateDownloadLinksOnPostsWithAttachment($file_id);
                 return $file->post_msg_id;
             }
         }
         return false;
+    }
+
+    public function updateDownloadLinksOnPostsWithAttachment($file_id = null)
+    {
+        if ($file_id) {
+            $files = [Attachment::find($file_id)];
+        } else {
+            $files = Attachment::where('phpbb_attachment_id', '>', 0)->get();
+        }
+        foreach ($files as $file) {
+            $this->execute(UpdateDownloadLinkCommand::class, ['phpbb_id' => $file->post_msg_id, 'attachment_id' => $file->phpbb_attachment_id]);
+        }
     }
 
 }
