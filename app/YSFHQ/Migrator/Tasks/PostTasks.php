@@ -16,7 +16,7 @@ class PostTasks
             $job->delete();
         } else {
             $post_id = MigratorActivities::importPost($data['id']);
-            if ($post_id > 0) {
+            if ($post_id) {
                 Log::info("Imported: http://forum.ysfhq.com/viewtopic.php?p=$post_id#p$post_id");
                 Queue::push('YSFHQ\Migrator\Tasks\PostTasks@reLinkPost', ['phpbb_id' => $post_id]);
                 $job->delete();

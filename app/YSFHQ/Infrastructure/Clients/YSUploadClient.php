@@ -33,12 +33,24 @@ class YSUploadClient extends DatabaseClient
 
     public function getFileDataFromId($legacy_id = null)
     {
-        $result = $this->getConnection('ysupload')
-            ->table('files')
-            ->where('id', $legacy_id)
-            ->first();
-        // do some other things like getting filesize, etc.
-        return $result;
+        $file = $this->getConnection('ysupload')->table('files')
+            ->where('id', $legacy_id)->first();
+        if ($file) {
+            $file->local_path = '/var/www/ysupload.com/files/'.substr($file->filename, strpos($file->filename, '/files/')+7);
+
+            $file->filename =  substr($file->local_path, strrpos($file->local_path, '/'));
+            if (preg_match("^[0-9]{4}", $file->filename)) {
+                $file->filename = substr($file->filename, 4);
+            }
+
+            $file->extension = substr($file->filename, strrpos('.'));
+
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $file->mimetype = finfo_file($finfo, $file->local_path);
+
+            $file->filesize = filesize($file->local_path);
+        }
+        return $file;
     }
 
 }

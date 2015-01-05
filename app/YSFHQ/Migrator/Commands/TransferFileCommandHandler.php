@@ -16,16 +16,17 @@ class TransferFileCommandHandler implements CommandHandler {
      * Handle the command.
      *
      * @param object $command
-     * @return void
+     * @return int|null The attachment ID from phpBB if transferred properly, otherwise null.
      */
     public function handle($command)
     {
-        // copy the file
         if (copy($file->local_path, '/var/www/forum.ysfhq.com/files/'.$file->physical_path)) {
-            // add the attachment to the post
             $file->phpbb_attachment_id = $this->phpbb->saveAttachment($file);
-            $file->save();
+            if ($file->save()) {
+                return $file->phpbb_attachment_id;
+            }
         }
+        return null;
     }
 
 }

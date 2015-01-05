@@ -61,11 +61,12 @@ class Activities
             $phpbb_post_id = $this->execute(ImportPostCommand::class, ['post' => $post]);
             if ($phpbb_post_id > 0) {
                 $post->phpbb_id = $phpbb_post_id;
-                $post->save();
+                if ($post->save()) {
+                    return $phpbb_post_id;
+                }
             }
-            return $phpbb_post_id;
         }
-        return -1;
+        return false;
     }
 
     public function updatePostAuthor($phpbb_id = null)
@@ -96,7 +97,9 @@ class Activities
     public function copyYSUploadFilesToPhpbb($file_id = null)
     {
         if ($file_id && $file = File::find($file_id)) {
-            return $this->execute(TransferFileCommand::class, ['file' => $file]);
+            if ($this->execute(TransferFileCommand::class, ['file' => $file])) {
+                return $file->post_msg_id;
+            }
         }
         return false;
     }
