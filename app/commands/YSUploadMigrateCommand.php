@@ -40,12 +40,20 @@ class YSUploadMigrateCommand extends Command {
     public function fire()
     {
         $migrator = new MigratorActivities();
-        $this->info('Starting addon metadata export process from YSUpload...');
-        $migrator->exportAddonMetaFromYSUpload();
-        $this->info('Metadata export complete.');
-        // $this->info('Starting addon file export process from YSUpload...');
-        // $migrator->exportAddonDataFromYSUpload();
-        // $this->info('File export complete.');
+        switch ($this->argument('stage')) {
+            case 'meta':
+                $this->info('Starting addon metadata export process from YSUpload...');
+                $migrator->exportAddonMetaFromYSUpload();
+                $this->info('Metadata export complete.');
+                break;
+            case 'files':
+                $this->info('Starting addon file export process from YSUpload...');
+                $migrator->exportAddonDataFromYSUpload();
+                $this->info('File export complete.');
+                break;
+            default:
+                $this->error('Invalid argument. Choose from "meta" or "files".');
+        }
     }
 
     /**
@@ -56,7 +64,7 @@ class YSUploadMigrateCommand extends Command {
     protected function getArguments()
     {
         return array(
-            // array('example', InputArgument::REQUIRED, 'An example argument.'),
+            array('stage', InputArgument::REQUIRED, 'Export either the metadata or transfer files. Use "meta" for metadata export, or "files" for transferring files onto the forum.'),
         );
     }
 

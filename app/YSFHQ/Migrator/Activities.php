@@ -85,7 +85,7 @@ class Activities
 
     public function transferYSUploadFiles()
     {
-        $posts = Post::where('source', 'ysupload')->where('phpbb_id', '>', 0)->get()
+        $posts = Post::where('source', 'ysupload')->where('phpbb_id', '>', 0)->get();
         foreach ($posts as $post) {
             if (!$post->attachment()) {
                 $id = $this->execute(PopulateFileCommand::class, ['post' => $post]);
