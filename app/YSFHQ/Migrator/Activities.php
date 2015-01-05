@@ -50,11 +50,6 @@ class Activities
         return $this->execute(ExportYSUploadAddonMetaCommand::class, []);
     }
 
-    public function exportAddonDataFromYSUpload()
-    {
-        return $this->execute(ExportYSUploadAddonDataCommand::class, []);
-    }
-
     public function importPost($post_id = null)
     {
         if (isset($post_id)) {

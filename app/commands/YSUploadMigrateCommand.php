@@ -47,8 +47,8 @@ class YSUploadMigrateCommand extends Command {
                 $this->info('Metadata export complete.');
                 break;
             case 'files':
-                $this->info('Starting addon file export process from YSUpload...');
-                $migrator->exportAddonDataFromYSUpload();
+                $this->info('Starting addon file transfer process from YSUpload...');
+                $migrator->transferYSUploadFiles();
                 $this->info('File export complete.');
                 break;
             default:
