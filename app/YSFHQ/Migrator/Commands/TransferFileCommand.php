@@ -1,6 +1,6 @@
 <?php namespace YSFHQ\Migrator\Commands;
 
-use YSFHQ\Migrator\File;
+use YSFHQ\Migrator\Attachment;
 
 class TransferFileCommand {
 
@@ -12,7 +12,7 @@ class TransferFileCommand {
     /**
      * @param YSFHQ\Migrator\File file
      */
-    public function __construct(File $file)
+    public function __construct(Attachment $file)
     {
         $this->file = $file;
     }

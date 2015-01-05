@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
-class File extends Eloquent {
+class Attachment extends Eloquent {
 
     protected $table = 'files';
 

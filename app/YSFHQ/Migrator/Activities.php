@@ -15,7 +15,7 @@ use YSFHQ\Migrator\Commands\FixBbcodeCommand,
     YSFHQ\Migrator\Commands\UpdateImportedPostCommand,
     YSFHQ\Migrator\Commands\PopulateFileCommand,
     YSFHQ\Migrator\Commands\TransferFileCommand;
-use YSFHQ\Migrator\File,
+use YSFHQ\Migrator\Attachment,
     YSFHQ\Migrator\Post;
 
 class Activities
@@ -94,7 +94,7 @@ class Activities
 
     public function copyYSUploadFilesToPhpbb($file_id = null)
     {
-        if ($file_id && $file = File::find($file_id)) {
+        if ($file_id && $file = Attachment::find($file_id)) {
             if ($this->execute(TransferFileCommand::class, ['file' => $file])) {
                 return $file->post_msg_id;
             }

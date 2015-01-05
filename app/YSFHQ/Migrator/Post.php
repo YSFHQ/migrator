@@ -8,7 +8,7 @@ class Post extends Eloquent {
 
     public function attachment()
     {
-        return $this->hasOne('File');
+        return $this->hasOne('Attachment', 'post_id');
     }
 
     public static function findYSUploadForumPost($ysupload_id = null)

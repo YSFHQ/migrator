@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Log,
     Illuminate\Support\Facades\Queue;
 use YSFHQ\Migrator\ActivitiesFacade as MigratorActivities,
     YSFHQ\Migrator\Post,
-    YSFHQ\Migrator\File;
+    YSFHQ\Migrator\Attachment;
 
 class FileTasks
 {

@@ -4,7 +4,7 @@ use Carbon\Carbon,
     Laracasts\Commander\CommandHandler,
     YSFHQ\Infrastructure\Clients\PhpbbClient,
     YSFHQ\Infrastructure\Clients\YSUploadClient,
-    YSFHQ\Migrator\File,
+    YSFHQ\Migrator\Attachment,
     YSFHQ\Migrator\Post;
 
 class PopulateFileCommandHandler implements CommandHandler {
@@ -32,7 +32,7 @@ class PopulateFileCommandHandler implements CommandHandler {
         $post_data = $this->phpbb->getPostDataFromId($post->phpbb_id);
         $file_data = $this->ysupload->getFileDataFromId($post->legacy_id);
 
-        $file = new File();
+        $file = new Attachment();
         $file->post_id = $post->id;
         $file->local_path = $file_data['local_path'];
 
