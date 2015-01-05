@@ -18,7 +18,7 @@ class FileTasks
         } else {
             $post_id = MigratorActivities::copyYSUploadFilesToPhpbb($data['id']);
             if ($post_id) {
-                Log::info("Uploaded attachment to post: http://forum.ysfhq.com/viewtopic.php?t=$post_id#p$post_id");
+                Log::info("Uploaded attachment to post: http://forum.ysfhq.com/viewtopic.php?p=$post_id#p$post_id");
                 $job->delete();
             } else {
                 Log::error('Uploading attachment for file ID '.$data['id'].' failed.');

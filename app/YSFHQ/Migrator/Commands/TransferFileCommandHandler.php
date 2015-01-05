@@ -20,7 +20,8 @@ class TransferFileCommandHandler implements CommandHandler {
      */
     public function handle($command)
     {
-        if (copy($file->local_path, '/var/www/forum.ysfhq.com/files/'.$file->physical_path)) {
+        $file = $command->file;
+        if (copy($file->local_path, '/var/www/forum.ysfhq.com/files/'.$file->physical_filename)) {
             $file->phpbb_attachment_id = $this->phpbb->saveAttachment($file);
             if ($file->save()) {
                 return $file->phpbb_attachment_id;

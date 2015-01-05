@@ -87,7 +87,8 @@ class Activities
         foreach ($posts as $post) {
             if (!$post->attachment) {
                 $id = $this->execute(PopulateFileCommand::class, ['post' => $post]);
-                Queue::push('YSFHQ\Migrator\Tasks\FileTasks@createAttachment', ['post_id' => $id]);
+                if ($id)
+                    Queue::push('YSFHQ\Migrator\Tasks\FileTasks@createAttachment', ['id' => $id]);
             }
         }
     }
