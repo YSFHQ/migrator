@@ -12,8 +12,9 @@ use YSFHQ\Migrator\Commands\FixBbcodeCommand,
     YSFHQ\Migrator\Commands\ExportDrupalAddonsCommand,
     YSFHQ\Migrator\Commands\ExportYSUploadAddonMetaCommand,
     YSFHQ\Migrator\Commands\ImportPostCommand,
-    YSFHQ\Migrator\Commands\TransferYSUploadAddonDataCommand,
-    YSFHQ\Migrator\Commands\UpdateImportedPostCommand;
+    YSFHQ\Migrator\Commands\UpdateImportedPostCommand,
+    YSFHQ\Migrator\Commands\PopulateFileCommand,
+    YSFHQ\Migrator\Commands\TransferFileCommand;
 
 class Activities
 {
