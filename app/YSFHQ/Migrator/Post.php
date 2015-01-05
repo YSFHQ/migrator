@@ -2,15 +2,13 @@
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
-use YSFHQ\Migrator\Attachment;
-
 class Post extends Eloquent {
 
     protected $table = 'posts';
 
     public function attachment()
     {
-        return $this->hasOne('Attachment', 'post_id');
+        return $this->hasOne('YSFHQ\Migrator\Attachment', 'post_id');
     }
 
     public static function findYSUploadForumPost($ysupload_id = null)
