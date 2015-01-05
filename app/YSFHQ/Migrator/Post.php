@@ -2,6 +2,8 @@
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
+use YSFHQ\Migrator\Attachment;
+
 class Post extends Eloquent {
 
     protected $table = 'posts';
