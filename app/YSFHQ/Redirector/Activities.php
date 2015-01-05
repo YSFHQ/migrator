@@ -25,7 +25,7 @@ class Activities
                 $post = Post::where('source', 'drupal')->where('legacy_id', $nid)->first();
             }
         }
-        if (strpos($domain, 'ysupload.com')!==false) {
+        if (strpos($domain, 'ysupload.com')!==false || strpos($domain, 'ysu.ysfhq.com')!==false) {
             $domain = 'ysupload';
             if (starts_with($route, '/download.php') || starts_with($route, '/getfile.php')) {
                 $id = Input::get('id');
