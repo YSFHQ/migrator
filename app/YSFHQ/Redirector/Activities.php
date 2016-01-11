@@ -27,7 +27,7 @@ class Activities
         }
         if (strpos($domain, 'ysupload.com')!==false || strpos($domain, 'ysu.ysfhq.com')!==false) {
             $domain = 'ysupload';
-            if (starts_with($route, '/download.php') || starts_with($route, '/getfile.php')) {
+            if (starts_with($route, '/download.php') || starts_with($route, '/getfile.php') || starts_with($route, '/ysu3/getfile.php') || starts_with($route, '/ysu3/download.php')) {
                 $id = Input::get('id');
                 if ($id) {
                     $post = Post::where('source', 'ysupload')->where('legacy_id', $id)->first();
