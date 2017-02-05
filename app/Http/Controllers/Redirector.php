@@ -26,7 +26,7 @@ class Redirector extends Controller
         }
         if (in_array($domain, ['ysupload.com', 'www.ysupload.com', 'ysu.ysfhq.com'])) {
             $domain = 'ysupload';
-            if (starts_with($route, '/download.php') || starts_with($route, '/getfile.php')) {
+            if (starts_with($route, '/download.php') || starts_with($route, '/getfile.php') || starts_with($route, '/ysu3/getfile.php') || starts_with($route, '/ysu3/download.php')) {
                 $id = $request->get('id');
                 if ($id) {
                     $post = Post::where('source', 'ysupload')->where('legacy_id', $id)->first();
