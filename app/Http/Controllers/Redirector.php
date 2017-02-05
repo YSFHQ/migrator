@@ -12,18 +12,18 @@ class Redirector extends Controller
 {
     public function redirect(Request $request)
     {
-        $domain = $request->root();
+        $domain = preg_match('/https?:\/\/(.*)/', $request->root(), $matches)[1];
         $route = strtolower(str_replace($domain, '', $request->fullUrl()));
         if (empty($route)) $route = '/';
 
-        if (strpos($domain, 'drupal.ysfhq.com') !== false) {
+        if (in_array($domain, ['drupal.ysfhq.com'])) {
             $domain = 'drupal';
             if (starts_with($route, '/node/')) {
                 $nid = substr($route, strrpos($route, '/') + 1);
                 $post = Post::where('source', 'drupal')->where('legacy_id', $nid)->first();
             }
         }
-        if (strpos($domain, 'ysupload.com') !== false) {
+        if (in_array($domain, ['ysupload.com', 'www.ysupload.com', 'ysu.ysfhq.com'])) {
             $domain = 'ysupload';
             if (starts_with($route, '/download.php') || starts_with($route, '/getfile.php')) {
                 $id = $request->get('id');
@@ -52,6 +52,6 @@ class Redirector extends Controller
             }
         }
 
-        return $dest;
+        return redirect()->to($dest, 301);
     }
 }
