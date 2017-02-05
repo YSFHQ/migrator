@@ -37,7 +37,7 @@ This application, developed with the Laravel PHP Framework (see below), is used 
 - Add method to `PhpbbClient` which can add attachment record to database
 - More work not yet realized
 
-##### *Copyright (c) 2015 YSFlight Headquarters. All rights reserved.*
+##### *Copyright (c) 2017 YSFlight Headquarters. All rights reserved.*
 
 ##### Developed by [Eric Tendian](https://github.com/EricTendian).
 

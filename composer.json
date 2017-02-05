@@ -1,8 +1,8 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
-    "license": "MIT",
+    "name": "YSFHQ/migrator",
+    "description": "Migrates data from YSFHQ's old Drupal-based site and YSUpload.com to the new phpBB forum.",
+    "keywords": [],
+    "license": "proprietary",
     "type": "project",
     "require": {
         "php": ">=5.6.4",
