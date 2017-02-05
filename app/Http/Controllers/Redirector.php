@@ -12,9 +12,10 @@ class Redirector extends Controller
 {
     public function redirect(Request $request)
     {
-        $domain = preg_match('/https?:\/\/(.*)/', $request->root(), $matches)[1];
-        $route = strtolower(str_replace($domain, '', $request->fullUrl()));
-        if (empty($route)) $route = '/';
+        preg_match('/https?:\/\/(.*)/', $request->root(), $matches);
+        $domain = $matches[1];
+        $route = strtolower($request->path());
+        if ($route != '/') $route = '/'.$route;
 
         if (in_array($domain, ['drupal.ysfhq.com'])) {
             $domain = 'drupal';
